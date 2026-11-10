@@ -1,5 +1,5 @@
 
-const API_BASE = "http://127.0.0.1:8000";
+const API_BASE = "https://studymate-n0lm.onrender.com";
 
 const TOKEN_KEY = "studyMateToken";
 const USER_KEY = "studyMateUser";
@@ -36,7 +36,6 @@ function logout() {
 // =====================================
 
 async function apiRequest(endpoint, options = {}) {
-
     const token = getToken();
 
     const headers = {
@@ -54,7 +53,6 @@ async function apiRequest(endpoint, options = {}) {
     });
 
     let data = null;
-
     const contentType = response.headers.get("content-type");
 
     if (contentType && contentType.includes("application/json")) {
@@ -62,7 +60,6 @@ async function apiRequest(endpoint, options = {}) {
     }
 
     if (!response.ok) {
-
         if (response.status === 401 && token) {
             logout();
         }
@@ -80,7 +77,6 @@ async function apiRequest(endpoint, options = {}) {
 // =====================================
 
 async function registerUser(username, email, password) {
-
     return await apiRequest("/api/auth/register", {
         method: "POST",
         body: JSON.stringify({
@@ -96,7 +92,6 @@ async function registerUser(username, email, password) {
 // =====================================
 
 async function loginUser(identifier, password) {
-
     const data = await apiRequest("/api/auth/login", {
         method: "POST",
         body: JSON.stringify({
@@ -106,7 +101,6 @@ async function loginUser(identifier, password) {
     });
 
     saveSession(data);
-
     return data.user;
 }
 
@@ -115,7 +109,6 @@ async function loginUser(identifier, password) {
 // =====================================
 
 function getLegacyData(key) {
-
     try {
         return JSON.parse(localStorage.getItem(key)) || [];
     } catch {
@@ -124,14 +117,11 @@ function getLegacyData(key) {
 }
 
 function legacyId(type, item, index) {
-
     const originalId = item.id ?? index;
-
     return `legacy-${type}-${String(originalId)}`.slice(0, 64);
 }
 
 async function migrateLegacyData(userId) {
-
     const migrationKey = `studyMateMigrated_${userId}`;
 
     if (localStorage.getItem(migrationKey) === "true") {
@@ -141,10 +131,6 @@ async function migrateLegacyData(userId) {
     const oldTasks = getLegacyData("studyTasks");
     const oldAssignments = getLegacyData("studyAssignments");
     const oldExams = getLegacyData("studyExams");
-
-    // Retrieve existing backend records.
-    // This also prevents duplicate imports if migration
-    // was interrupted partway through.
 
     const [existingTasks, existingAssignments, existingExams] =
         await Promise.all([
@@ -157,10 +143,7 @@ async function migrateLegacyData(userId) {
     const assignmentIds = new Set(existingAssignments.map(item => item.id));
     const examIds = new Set(existingExams.map(item => item.id));
 
-    // IMPORT TASKS
-
     for (let i = 0; i < oldTasks.length; i++) {
-
         const task = oldTasks[i];
         const id = legacyId("task", task, i);
 
@@ -185,7 +168,9 @@ async function migrateLegacyData(userId) {
         }
 
         if (completedDates.length === 0 && task.completed) {
-            completedDates.push(task.date || new Date().toISOString().slice(0, 10));
+            completedDates.push(
+                task.date || new Date().toISOString().slice(0, 10)
+            );
         }
 
         const today = new Date().toISOString().slice(0, 10);
@@ -205,10 +190,7 @@ async function migrateLegacyData(userId) {
         taskIds.add(id);
     }
 
-    // IMPORT ASSIGNMENTS
-
     for (let i = 0; i < oldAssignments.length; i++) {
-
         const assignment = oldAssignments[i];
         const id = legacyId("assignment", assignment, i);
 
@@ -227,10 +209,7 @@ async function migrateLegacyData(userId) {
         assignmentIds.add(id);
     }
 
-    // IMPORT EXAMS
-
     for (let i = 0; i < oldExams.length; i++) {
-
         const exam = oldExams[i];
         const id = legacyId("exam", exam, i);
 
@@ -251,9 +230,6 @@ async function migrateLegacyData(userId) {
         examIds.add(id);
     }
 
-    // Only mark migration complete after all imports succeed.
-    // Original localStorage records remain untouched.
-
     localStorage.setItem(migrationKey, "true");
 }
 
@@ -262,7 +238,6 @@ async function migrateLegacyData(userId) {
 // =====================================
 
 async function initializeStudyMate() {
-
     if (!getToken()) {
         window.location.href = "login.html";
         return null;
