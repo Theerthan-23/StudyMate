@@ -6,6 +6,10 @@ import os
 import secrets
 import time
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from fastapi import Depends, HTTPException, status
 from fastapi.security import (
     HTTPAuthorizationCredentials,
@@ -18,10 +22,14 @@ from database import get_db
 from models import User
 
 
-SECRET_KEY = os.getenv(
-    "STUDYMATE_SECRET_KEY",
-    "StudyMate-2026-New-Secret-Key-9xK7pL2mQ8"
-).encode("utf-8")
+SECRET_KEY = os.getenv("STUDYMATE_SECRET_KEY")
+
+if not SECRET_KEY:
+    raise RuntimeError(
+        "STUDYMATE_SECRET_KEY environment variable is not set."
+    )
+
+SECRET_KEY = SECRET_KEY.encode("utf-8")
 
 
 bearer_scheme = HTTPBearer(auto_error=False)
