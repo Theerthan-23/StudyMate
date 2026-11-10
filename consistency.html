@@ -1,0 +1,405 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyMate | Consistency</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        .account-wrapper {
+            position: relative;
+            margin: 22px 0;
+            width: 100%;
+        }
+
+        .account-button {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid rgba(255,255,255,0.09);
+            border-radius: 12px;
+            background: rgba(255,255,255,0.04);
+            color: inherit;
+            cursor: pointer;
+            text-align: left;
+            font-family: inherit;
+        }
+
+        .account-avatar {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #7866e8;
+            color: white;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .account-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .account-text strong {
+            display: block;
+            font-size: 13px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .account-text span {
+            display: block;
+            font-size: 11px;
+            opacity: 0.65;
+            margin-top: 3px;
+        }
+
+        .account-arrow {
+            font-size: 13px;
+            opacity: 0.7;
+        }
+
+        .account-dropdown {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: calc(100% + 8px);
+            width: 100%;
+            z-index: 1000;
+            padding: 10px;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 12px;
+            background: #202039;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .account-dropdown.show {
+            display: block;
+        }
+
+        .account-dropdown-info {
+            padding: 9px 10px;
+            font-size: 13px;
+            color: white;
+            overflow-wrap: anywhere;
+        }
+
+        .logout-button {
+            width: 100%;
+            margin-top: 6px;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255,80,80,0.1);
+            color: #ff7777;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .logout-button:hover {
+            background: rgba(255,80,80,0.2);
+        }
+    </style>
+
+    <script src="api.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">S</div>
+            <div>
+                <h2>StudyMate</h2>
+                <span>YOUR LEARNING SPACE</span>
+            </div>
+        </div>
+
+        <!-- ACCOUNT DROPDOWN -->
+        <div class="account-wrapper">
+
+            <button class="account-button" id="accountButton" type="button">
+
+                <div class="account-avatar">S</div>
+
+                <div class="account-text">
+                    <strong id="accountUsername">Student</strong>
+                    <span>My Account</span>
+                </div>
+
+                <span class="account-arrow">⌄</span>
+
+            </button>
+
+            <div class="account-dropdown" id="accountDropdown">
+
+                <div class="account-dropdown-info">
+                    Signed in as
+                    <strong id="dropdownUsername">Student</strong>
+                </div>
+
+                <button class="logout-button" id="logoutButton" type="button">
+                    ↪ Logout
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="nav-label">WORKSPACE</div>
+
+        <nav class="nav">
+
+            <a href="index.html">
+                <span class="nav-icon">◈</span>
+                Dashboard
+            </a>
+
+            <a href="daily.html">
+                <span class="nav-icon">✓</span>
+                Daily Tasks
+            </a>
+
+            <a href="assignments.html">
+                <span class="nav-icon">▤</span>
+                Assignments
+            </a>
+
+            <a href="exam.html">
+                <span class="nav-icon">▥</span>
+                Exam Schedule
+            </a>
+
+            <a href="consistency.html" class="active">
+                <span class="nav-icon">◎</span>
+                Consistency
+                <span class="nav-indicator"></span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="sidebar-tip">
+                <div class="tip-icon">✦</div>
+                <h3>Small steps.</h3>
+                <h3>Big progress.</h3>
+                <p>Stay consistent and keep moving forward.</p>
+            </div>
+
+            <div class="profile">
+                <div class="profile-avatar">S</div>
+                <div class="profile-info">
+                    <strong>Student</strong>
+                    <span>Learning every day</span>
+                </div>
+                <span class="profile-menu">•••</span>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <header class="dashboard-header">
+
+            <div>
+                <span class="eyebrow">YOUR PERSONAL GROWTH</span>
+                <h1>Consistency<span class="heading-dot">.</span></h1>
+                <p>Small efforts every day create remarkable progress.</p>
+            </div>
+
+            <div class="header-status">
+                <span class="status-dot"></span>
+                KEEP SHOWING UP
+            </div>
+
+        </header>
+
+
+        <!-- TODAY'S PERFORMANCE -->
+        <section class="consistency-today">
+
+            <div class="consistency-section-heading">
+                <div>
+                    <span class="eyebrow">DAILY PERFORMANCE</span>
+                    <h2>Today's consistency</h2>
+                    <p>See how much of your daily routine you've completed.</p>
+                </div>
+            </div>
+
+            <div class="consistency-today-card">
+
+                <div class="circle" id="progressCircle">
+                    <div class="circle-inner" id="percentage">0%</div>
+                </div>
+
+                <div class="today-details">
+
+                    <span class="today-tag">✦ &nbsp; YOUR DAILY RESULT</span>
+
+                    <h2 id="progressText">0 of 0 tasks completed</h2>
+
+                    <p>
+                        Every task you complete is progress.
+                        Keep building your routine one day at a time.
+                    </p>
+
+                    <strong class="green" id="motivation">
+                        Let's get started!
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- WEEKLY OVERVIEW -->
+        <section class="consistency-week">
+
+            <div class="consistency-section-heading">
+
+                <div>
+                    <span class="eyebrow">YOUR LAST SEVEN DAYS</span>
+                    <h2>Weekly overview</h2>
+                    <p>Your consistency, measured through your daily tasks.</p>
+                </div>
+
+                <span class="workspace-count">7 DAY REPORT</span>
+
+            </div>
+
+
+            <div class="consistency-stats">
+
+                <div class="consistency-stat-card">
+                    <div class="stat-icon stat-blue">↗</div>
+                    <span>WEEKLY AVERAGE</span>
+                    <h3 id="weeklyAverage">0%</h3>
+                    <p>Average daily completion</p>
+                </div>
+
+                <div class="consistency-stat-card">
+                    <div class="stat-icon stat-purple">✦</div>
+                    <span>ACTIVE DAYS</span>
+                    <h3 id="activeDays">0/7</h3>
+                    <p>Days with completed tasks</p>
+                </div>
+
+                <div class="consistency-stat-card">
+                    <div class="stat-icon stat-green">✓</div>
+                    <span>TASKS COMPLETED</span>
+                    <h3 id="weeklyCompleted">0</h3>
+                    <p>Completed task entries this week</p>
+                </div>
+
+            </div>
+
+
+            <!-- WEEKLY GRAPH -->
+            <div class="weekly-performance-card">
+
+                <div class="weekly-performance-heading">
+
+                    <div>
+                        <h3>Daily performance</h3>
+                        <p>Your completion percentage for each day.</p>
+                    </div>
+
+                    <span class="graph-legend">
+                        <span></span> Completion
+                    </span>
+
+                </div>
+
+                <div class="consistency-chart" id="consistencyWeekGraph">
+                    <p class="empty">Your weekly performance will appear here.</p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <footer class="dashboard-footer">
+            <span>✦ StudyMate</span>
+            <span>Designed for focus. Built for progress.</span>
+        </footer>
+
+    </main>
+
+</div>
+
+
+<!-- ACCOUNT DROPDOWN JAVASCRIPT -->
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const accountButton = document.getElementById("accountButton");
+    const accountDropdown = document.getElementById("accountDropdown");
+    const logoutButton = document.getElementById("logoutButton");
+
+    const user = StudyMateAPI.getUser();
+
+    let username = "Student";
+
+    if (user) {
+        username = user.username || user.name || "Student";
+    }
+
+    document.getElementById("accountUsername").textContent = username;
+    document.getElementById("dropdownUsername").textContent = username;
+
+    document.querySelector(".account-avatar").textContent =
+        username.trim().charAt(0).toUpperCase() || "S";
+
+    accountButton.addEventListener("click", function (event) {
+        event.stopPropagation();
+        accountDropdown.classList.toggle("show");
+    });
+
+    logoutButton.addEventListener("click", function () {
+        StudyMateAPI.logout();
+        window.location.href = "login.html";
+    });
+
+    document.addEventListener("click", function (event) {
+        if (!event.target.closest(".account-wrapper")) {
+            accountDropdown.classList.remove("show");
+        }
+    });
+
+});
+
+</script>
+
+</body>
+</html>

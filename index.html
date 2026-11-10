@@ -1,0 +1,416 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyMate | Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="api.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+<div class="container">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">S</div>
+            <div>
+                <h2>StudyMate</h2>
+                <span>YOUR LEARNING SPACE</span>
+            </div>
+        </div>
+
+        <div class="account-wrapper">
+            <button class="account-button" id="accountButton">
+                <span class="account-avatar">S</span>
+                <span class="account-text">
+                    <strong id="accountUsername">My Account</strong>
+                    <small>Account settings</small>
+                </span>
+                <span class="account-arrow">⌄</span>
+            </button>
+
+            <div class="account-dropdown" id="accountDropdown">
+                <div class="account-dropdown-info">
+                    <strong id="dropdownUsername">Student</strong>
+                    <small>StudyMate Account</small>
+                </div>
+
+                <button class="logout-button" id="logoutButton">
+                    <span>↪</span> Logout
+                </button>
+            </div>
+        </div>
+
+        <div class="nav-label">WORKSPACE</div>
+
+        <nav class="nav">
+            <a href="index.html" class="active">
+                <span class="nav-icon">◈</span>
+                Dashboard
+                <span class="nav-indicator"></span>
+            </a>
+            <a href="daily.html">
+                <span class="nav-icon">✓</span>
+                Daily Tasks
+            </a>
+            <a href="assignments.html">
+                <span class="nav-icon">▤</span>
+                Assignments
+            </a>
+            <a href="exam.html">
+                <span class="nav-icon">▦</span>
+                Exam Schedule
+            </a>
+            <a href="consistency.html">
+                <span class="nav-icon">◎</span>
+                Consistency
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="sidebar-tip">
+                <div class="tip-icon">✦</div>
+                <h3>Small steps.</h3>
+                <h3>Big progress.</h3>
+                <p>Stay consistent and keep moving forward.</p>
+            </div>
+
+            <div class="profile">
+                <div class="profile-avatar">S</div>
+                <div class="profile-info">
+                    <strong>Student</strong>
+                    <span>Learning every day</span>
+                </div>
+                <span class="profile-menu">•••</span>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <header class="dashboard-header">
+            <div>
+                <span class="eyebrow">YOUR PERSONAL WORKSPACE</span>
+                <h1>Dashboard<span class="heading-dot">.</span></h1>
+                <p>Everything you need to stay focused and make progress.</p>
+            </div>
+
+            <div class="header-status">
+                <span class="status-dot"></span>
+                YOUR SPACE TO GROW
+            </div>
+        </header>
+
+        <section class="hero">
+            <div class="hero-content">
+                <span class="hero-tag">✦ &nbsp; A NEW DAY, A NEW OPPORTUNITY</span>
+
+                <h2>
+                    Build your focus.<br>
+                    <span>Own your progress.</span>
+                </h2>
+
+                <p>
+                    Organize your learning, stay on top of your goals,
+                    and turn small daily efforts into something meaningful.
+                </p>
+
+                <a href="daily.html" class="hero-button">
+                    Explore daily tasks <span>→</span>
+                </a>
+            </div>
+
+            <div class="hero-art">
+                <div class="orbit orbit-one"></div>
+                <div class="orbit orbit-two"></div>
+                <div class="hero-glow"></div>
+                <div class="hero-symbol"><span>✦</span></div>
+
+                <div class="floating-card floating-card-one">
+                    <span class="floating-icon">✓</span>
+                    Stay focused
+                </div>
+
+                <div class="floating-card floating-card-two">
+                    <span class="floating-icon">↗</span>
+                    Keep growing
+                </div>
+            </div>
+
+            <div class="hero-decoration"></div>
+        </section>
+
+        <!-- LIVE OVERVIEW -->
+        <section class="overview-section">
+            <div class="section-heading overview-heading">
+                <div>
+                    <span class="eyebrow">YOUR PROGRESS AT A GLANCE</span>
+                    <h2>Today's overview</h2>
+                    <p>A quick look at how your study goals are going.</p>
+                </div>
+                <span class="overview-live">
+                    <span></span> LIVE SUMMARY
+                </span>
+            </div>
+
+            <div class="overview-grid">
+
+                <a href="daily.html" class="overview-card overview-blue">
+                    <div class="overview-card-top">
+                        <span class="overview-icon">✓</span>
+                        <span class="overview-arrow">↗</span>
+                    </div>
+                    <span class="overview-label">DAILY TASKS</span>
+                    <strong class="overview-number" id="dashboardTaskCount">0/0</strong>
+                    <span class="overview-description" id="dashboardTaskMeta">
+                        Tasks completed today
+                    </span>
+                </a>
+
+                <a href="assignments.html" class="overview-card overview-purple">
+                    <div class="overview-card-top">
+                        <span class="overview-icon">▤</span>
+                        <span class="overview-arrow">↗</span>
+                    </div>
+                    <span class="overview-label">ASSIGNMENTS</span>
+                    <strong class="overview-number" id="dashboardAssignmentCount">0</strong>
+                    <span class="overview-description" id="dashboardAssignmentMeta">
+                        Pending assignments
+                    </span>
+                </a>
+
+                <a href="exam.html" class="overview-card overview-cyan">
+                    <div class="overview-card-top">
+                        <span class="overview-icon">▦</span>
+                        <span class="overview-arrow">↗</span>
+                    </div>
+                    <span class="overview-label">UPCOMING EXAMS</span>
+                    <strong class="overview-number" id="dashboardExamCount">0</strong>
+                    <span class="overview-description" id="dashboardExamMeta">
+                        Exams remaining
+                    </span>
+                </a>
+
+                <a href="consistency.html" class="overview-card overview-green">
+                    <div class="overview-card-top">
+                        <span class="overview-icon">◎</span>
+                        <span class="overview-arrow">↗</span>
+                    </div>
+                    <span class="overview-label">TODAY'S CONSISTENCY</span>
+                    <strong class="overview-number" id="dashboardConsistencyCount">0%</strong>
+                    <span class="overview-description" id="dashboardConsistencyMeta">
+                        Your daily completion rate
+                    </span>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- SMART STUDY PLANNER -->
+        <section class="smart-planner-section">
+
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">STUDY SMARTER</span>
+                    <h2>Your Smart Study Planner</h2>
+                    <p>Know what needs your attention next.</p>
+                </div>
+                <span class="workspace-count">YOUR PRIORITIES</span>
+            </div>
+
+            <div class="planner-grid">
+
+                <!-- NEXT EXAM -->
+                <div class="planner-card next-exam-card">
+                    <span class="planner-label">NEXT UPCOMING EXAM</span>
+
+                    <h3 id="plannerExamSubject">No upcoming exams</h3>
+
+                    <p id="plannerExamDate">
+                        Your upcoming exams will appear here.
+                    </p>
+
+                    <div class="exam-countdown" id="plannerExamCountdown">
+                        You're all caught up!
+                    </div>
+
+                    <a href="exam.html">View exam schedule →</a>
+                </div>
+
+                <!-- PRIORITY ASSIGNMENTS -->
+                <div class="planner-card priority-card">
+                    <div class="planner-card-heading">
+                        <div>
+                            <span class="planner-label">DEADLINE TRACKER</span>
+                            <h3>Priority assignments</h3>
+                        </div>
+                        <a href="assignments.html">View all →</a>
+                    </div>
+
+                    <div id="plannerAssignmentList">
+                        <p class="planner-empty">
+                            No pending assignments.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- DAILY FOCUS -->
+                <div class="planner-card focus-card">
+                    <span class="planner-label">DAILY FOCUS</span>
+                    <h3>Today's study progress</h3>
+
+                    <strong id="plannerTaskSummary">0 / 0</strong>
+
+                    <div class="recommendation-box">
+                        <span class="recommendation-heading">✦ SMART RECOMMENDATION</span>
+
+                        <p id="plannerTaskMessage">
+                            Add your daily tasks to get started.
+                        </p>
+                    </div>
+
+                    <div class="planner-progress-track">
+                        <div id="plannerProgressBar"></div>
+                    </div>
+
+                    <a href="daily.html">Continue your tasks →</a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- WORKSPACE MODULES -->
+        <section class="workspace-section">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">GET THINGS DONE</span>
+                    <h2>Your workspace</h2>
+                    <p>Choose where you want to focus today.</p>
+                </div>
+                <span class="workspace-count">04 MODULES</span>
+            </div>
+
+            <div class="cards">
+
+                <a href="daily.html" class="dashboard-card card-blue">
+                    <div class="feature-top">
+                        <div class="feature-icon">✓</div>
+                        <span class="feature-arrow">↗</span>
+                    </div>
+                    <span class="feature-label">STAY ORGANIZED</span>
+                    <h3>Daily Tasks</h3>
+                    <p>Turn your everyday goals into completed achievements.</p>
+                    <div class="card-bottom">
+                        <span>Manage your day</span>
+                        <span>→</span>
+                    </div>
+                </a>
+
+                <a href="assignments.html" class="dashboard-card card-purple">
+                    <div class="feature-top">
+                        <div class="feature-icon">▤</div>
+                        <span class="feature-arrow">↗</span>
+                    </div>
+                    <span class="feature-label">PLAN AHEAD</span>
+                    <h3>Assignments</h3>
+                    <p>Keep your academic work organized and deadlines in sight.</p>
+                    <div class="card-bottom">
+                        <span>View assignments</span>
+                        <span>→</span>
+                    </div>
+                </a>
+
+                <a href="exam.html" class="dashboard-card card-cyan">
+                    <div class="feature-top">
+                        <div class="feature-icon">▦</div>
+                        <span class="feature-arrow">↗</span>
+                    </div>
+                    <span class="feature-label">PREPARE AHEAD</span>
+                    <h3>Exam Schedule</h3>
+                    <p>Organize upcoming exams and stay prepared for every subject.</p>
+                    <div class="card-bottom">
+                        <span>View exam schedule</span>
+                        <span>→</span>
+                    </div>
+                </a>
+
+                <a href="consistency.html" class="dashboard-card card-green">
+                    <div class="feature-top">
+                        <div class="feature-icon">◎</div>
+                        <span class="feature-arrow">↗</span>
+                    </div>
+                    <span class="feature-label">BUILD YOUR HABIT</span>
+                    <h3>Consistency</h3>
+                    <p>Track your daily commitment and build a stronger routine.</p>
+                    <div class="card-bottom">
+                        <span>Check consistency</span>
+                        <span>→</span>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+        <footer class="dashboard-footer">
+            <span>✦ StudyMate</span>
+            <span>Designed for focus. Built for progress.</span>
+        </footer>
+
+    </main>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const accountButton = document.getElementById("accountButton");
+    const accountDropdown = document.getElementById("accountDropdown");
+    const logoutButton = document.getElementById("logoutButton");
+
+    const user = StudyMateAPI.getUser();
+
+    let username = "Student";
+
+    if (user) {
+        username = user.username || user.name || "Student";
+    }
+
+    // Display username
+    document.getElementById("accountUsername").textContent = username;
+    document.getElementById("dropdownUsername").textContent = username;
+
+    // Update avatar dynamically
+    document.querySelector(".account-avatar").textContent =
+        username.trim().charAt(0).toUpperCase();
+
+    // Open account dropdown
+    accountButton.addEventListener("click", function (event) {
+        event.stopPropagation();
+        accountDropdown.classList.toggle("show");
+    });
+
+    // Logout
+    logoutButton.addEventListener("click", function () {
+        StudyMateAPI.logout();
+        window.location.href = "login.html";
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function (event) {
+        if (!event.target.closest(".account-wrapper")) {
+            accountDropdown.classList.remove("show");
+        }
+    });
+
+});
+</script>
+
+</body>
+</html>

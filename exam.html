@@ -1,0 +1,966 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyMate | Exam Schedule</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #080f1e;
+    color: #eaf0ff;
+    min-height: 100vh;
+}
+
+.exam-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+
+.exam-sidebar {
+    width: 235px;
+    background: #0d1729;
+    border-right: 1px solid #1e2c44;
+    padding: 28px 18px;
+    flex-shrink: 0;
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 25px;
+    padding-left: 10px;
+}
+
+.logo span {
+    color: #668cff;
+}
+
+/* ACCOUNT DROPDOWN */
+
+.account-wrapper {
+    position: relative;
+    margin: 0 0 30px;
+}
+
+.account-button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: #14223a;
+    border: 1px solid #293d59;
+    border-radius: 10px;
+    color: #eaf0ff;
+    cursor: pointer;
+    text-align: left;
+    transition: .2s;
+}
+
+.account-button:hover {
+    background: #1b2c4b;
+    border-color: #46658d;
+}
+
+.account-avatar {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #477fdb, #7658c9);
+    display: grid;
+    place-items: center;
+    color: white;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.account-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    min-width: 0;
+}
+
+.account-text strong {
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.account-text small {
+    font-size: 10px;
+    color: #8798b4;
+}
+
+.account-arrow {
+    color: #8798b4;
+    font-size: 16px;
+}
+
+.account-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    background: #172843;
+    border: 1px solid #40577f;
+    border-radius: 10px;
+    padding: 12px;
+    z-index: 50;
+    box-shadow: 0 10px 25px #0008;
+}
+
+.account-dropdown.show {
+    display: block;
+}
+
+.account-dropdown-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 4px 5px 12px;
+    border-bottom: 1px solid #304361;
+    margin-bottom: 10px;
+}
+
+.account-dropdown-info strong {
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.account-dropdown-info small {
+    font-size: 10px;
+    color: #8798b4;
+}
+
+.logout-button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    background: #552b3b;
+    border: 1px solid #754052;
+    border-radius: 7px;
+    color: #ffb8c9;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: left;
+}
+
+.logout-button:hover {
+    background: #74384b;
+    color: white;
+}
+
+.nav-title {
+    color: #71819c;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    margin: 20px 10px 12px;
+}
+
+.exam-sidebar a {
+    display: block;
+    text-decoration: none;
+    color: #a9b7ce;
+    padding: 13px 12px;
+    margin-bottom: 7px;
+    border-radius: 9px;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.exam-sidebar a:hover,
+.exam-sidebar a.active {
+    background: #1b2c4b;
+    color: white;
+}
+
+.nav-icon {
+    display: inline-block;
+    width: 27px;
+}
+
+/* MAIN */
+
+.exam-main {
+    flex: 1;
+    min-width: 0;
+    padding: 32px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.header h1 {
+    font-size: 28px;
+    margin-bottom: 7px;
+}
+
+.header p {
+    color: #8798b4;
+    font-size: 14px;
+}
+
+.add-btn {
+    background: #4269d8;
+    color: white;
+    border: none;
+    padding: 11px 17px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.add-btn:hover {
+    background: #557ce9;
+}
+
+/* STATS */
+
+.exam-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 15px;
+    margin-bottom: 22px;
+}
+
+.exam-stat {
+    background: #101c31;
+    border: 1px solid #22324e;
+    padding: 17px;
+    border-radius: 13px;
+}
+
+.exam-stat p {
+    color: #8b9bb5;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.exam-stat h2 {
+    font-size: 25px;
+}
+
+/* TWO COLUMN LAYOUT */
+
+.exam-content {
+    display: grid;
+    grid-template-columns: minmax(0, 1.65fr) minmax(260px, 1fr);
+    gap: 18px;
+    align-items: start;
+}
+
+/* CALENDAR */
+
+.calendar-card,
+.upcoming-card,
+.selected-details {
+    background: #101c31;
+    border: 1px solid #22324e;
+    border-radius: 16px;
+}
+
+.calendar-card {
+    padding: 17px;
+}
+
+.calendar-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 17px;
+    flex-wrap: wrap;
+}
+
+.calendar-top h2 {
+    font-size: 19px;
+}
+
+.calendar-controls {
+    display: flex;
+    gap: 6px;
+}
+
+.calendar-controls button {
+    background: #1c3154;
+    color: white;
+    border: 1px solid #304b75;
+    padding: 8px 10px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.calendar-controls button:hover {
+    background: #31528a;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 5px;
+}
+
+.weekday {
+    text-align: center;
+    color: #8192ae;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 7px 0;
+}
+
+.calendar-day {
+    position: relative;
+    min-height: 65px;
+    background: #14223a;
+    border: 1px solid #263955;
+    border-radius: 8px;
+    color: #eaf0ff;
+    text-align: left;
+    padding: 7px;
+    cursor: pointer;
+    transition: 0.2s;
+    min-width: 0;
+}
+
+.calendar-day:hover {
+    border-color: #668cff;
+    background: #1b3154;
+}
+
+.calendar-day.today {
+    border: 1px solid #668cff;
+    background: #1b2e50;
+}
+
+.calendar-day.selected {
+    background: #263e69;
+    border: 1px solid #91aaff;
+}
+
+.calendar-day.other-month {
+    opacity: 0.3;
+}
+
+.day-number {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.day-dots {
+    display: flex;
+    gap: 4px;
+    margin-top: 7px;
+    flex-wrap: wrap;
+}
+
+.day-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #8b9fff;
+}
+
+.exam-tooltip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 7px);
+    left: 0;
+    width: 185px;
+    background: #202f4c;
+    border: 1px solid #40577f;
+    border-radius: 9px;
+    padding: 10px;
+    z-index: 10;
+    box-shadow: 0 8px 25px #0008;
+    pointer-events: none;
+}
+
+.calendar-day:hover .exam-tooltip {
+    display: block;
+}
+
+.tooltip-exam {
+    font-size: 11px;
+    margin-bottom: 7px;
+    color: #dce6ff;
+}
+
+.tooltip-exam:last-child {
+    margin-bottom: 0;
+}
+
+/* UPCOMING EXAMS */
+
+.upcoming-card {
+    padding: 19px;
+    min-height: 320px;
+}
+
+.upcoming-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 17px;
+}
+
+.upcoming-heading h2 {
+    font-size: 18px;
+}
+
+.upcoming-heading span {
+    color: #8da7ff;
+    font-size: 11px;
+    background: #1c3154;
+    padding: 6px 9px;
+    border-radius: 20px;
+}
+
+.upcoming-list {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+}
+
+.upcoming-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #172843;
+    border: 1px solid #2b4264;
+    border-radius: 11px;
+    padding: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.upcoming-item:hover {
+    background: #20395e;
+    border-color: #668cff;
+}
+
+.date-box {
+    min-width: 48px;
+    height: 49px;
+    background: #263e69;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.date-box strong {
+    font-size: 17px;
+}
+
+.date-box span {
+    font-size: 9px;
+    color: #b9caff;
+    text-transform: uppercase;
+}
+
+.upcoming-info {
+    min-width: 0;
+}
+
+.upcoming-info h4 {
+    font-size: 13px;
+    margin-bottom: 5px;
+    overflow-wrap: anywhere;
+}
+
+.upcoming-info p {
+    font-size: 11px;
+    color: #9aacc8;
+    margin-top: 3px;
+}
+
+.empty-upcoming {
+    color: #8798b4;
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 15px 5px;
+}
+
+/* SELECTED DATE DETAILS */
+
+.selected-details {
+    margin-top: 18px;
+    padding: 19px;
+}
+
+.selected-details h3 {
+    font-size: 17px;
+    margin-bottom: 13px;
+}
+
+.no-exam {
+    color: #8494af;
+    font-size: 13px;
+}
+
+.selected-exam {
+    background: #172843;
+    border: 1px solid #2b4264;
+    border-radius: 10px;
+    padding: 13px;
+    margin-bottom: 10px;
+}
+
+.selected-exam h4 {
+    margin-bottom: 7px;
+    font-size: 14px;
+}
+
+.selected-exam p {
+    font-size: 12px;
+    color: #a9b9d2;
+    margin-top: 5px;
+    line-height: 1.5;
+}
+
+.delete-exam {
+    background: #552b3b;
+    color: #ffb8c9;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 11px;
+}
+
+/* MODAL */
+
+.exam-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #000a;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    z-index: 100;
+}
+
+.exam-modal.show {
+    display: flex;
+}
+
+.exam-form-card {
+    background: #111e34;
+    border: 1px solid #304567;
+    border-radius: 15px;
+    padding: 24px;
+    width: 100%;
+    max-width: 430px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.exam-form-card h2 {
+    margin-bottom: 18px;
+    font-size: 20px;
+}
+
+.exam-form-card label {
+    display: block;
+    color: #aab9d1;
+    font-size: 12px;
+    margin: 13px 0 6px;
+}
+
+.exam-form-card input,
+.exam-form-card textarea {
+    width: 100%;
+    background: #0b1628;
+    border: 1px solid #304361;
+    color: white;
+    border-radius: 7px;
+    padding: 10px;
+    outline: none;
+}
+
+.exam-form-card textarea {
+    resize: vertical;
+    min-height: 75px;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.form-buttons button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    color: white;
+}
+
+.save-btn {
+    background: #4269d8;
+}
+
+.cancel-btn {
+    background: #34435d;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1050px) {
+    .exam-content {
+        grid-template-columns: minmax(0, 1.4fr) minmax(230px, 1fr);
+    }
+
+    .exam-main {
+        padding: 22px;
+    }
+}
+
+@media (max-width: 750px) {
+    .exam-content {
+        grid-template-columns: 1fr;
+    }
+
+    .upcoming-card {
+        min-height: auto;
+    }
+
+    .exam-sidebar {
+        width: 190px;
+    }
+}
+
+@media (max-width: 600px) {
+    .exam-layout {
+        flex-direction: column;
+    }
+
+    .exam-sidebar {
+        width: 100%;
+        padding: 15px;
+        border-right: none;
+        border-bottom: 1px solid #1e2c44;
+    }
+
+    .logo {
+        margin-bottom: 15px;
+    }
+
+    .account-wrapper {
+        max-width: 230px;
+        margin: 0 0 12px;
+    }
+
+    .account-button {
+        padding: 8px 10px;
+    }
+
+    .account-dropdown {
+        width: 100%;
+    }
+
+    .exam-sidebar a {
+        display: inline-block;
+        padding: 9px;
+        font-size: 12px;
+    }
+
+    .nav-title {
+        display: none;
+    }
+
+    .exam-main {
+        padding: 15px;
+    }
+
+    .header h1 {
+        font-size: 23px;
+    }
+
+    .exam-stats {
+        gap: 8px;
+    }
+
+    .exam-stat {
+        padding: 11px;
+    }
+
+    .exam-stat h2 {
+        font-size: 20px;
+    }
+
+    .exam-stat p {
+        font-size: 10px;
+    }
+
+    .calendar-card {
+        padding: 10px;
+    }
+
+    .calendar-grid {
+        gap: 3px;
+    }
+
+    .calendar-day {
+        min-height: 49px;
+        padding: 5px;
+    }
+
+    .day-number {
+        font-size: 10px;
+    }
+
+    .weekday {
+        font-size: 9px;
+    }
+
+    .exam-tooltip {
+        display: none !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="exam-layout">
+
+    <aside class="exam-sidebar">
+
+        <div class="logo">Study<span>Mate.</span></div>
+
+        <!-- ACCOUNT DROPDOWN -->
+
+        <div class="account-wrapper">
+
+            <button class="account-button" id="accountButton">
+
+                <span class="account-avatar">S</span>
+
+                <span class="account-text">
+                    <strong id="accountUsername">My Account</strong>
+                    <small>Account settings</small>
+                </span>
+
+                <span class="account-arrow">⌄</span>
+
+            </button>
+
+            <div class="account-dropdown" id="accountDropdown">
+
+                <div class="account-dropdown-info">
+                    <strong id="dropdownUsername">Student</strong>
+                    <small>StudyMate Account</small>
+                </div>
+
+                <button class="logout-button" id="logoutButton">
+                    <span>↪</span> Logout
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="nav-title">MENU</div>
+
+        <a href="index.html"><span class="nav-icon">⌂</span> Dashboard</a>
+        <a href="daily.html"><span class="nav-icon">✓</span> Daily Tasks</a>
+        <a href="assignments.html"><span class="nav-icon">▤</span> Assignments</a>
+        <a href="exam.html" class="active"><span class="nav-icon">▦</span> Exam Schedule</a>
+        <a href="consistency.html"><span class="nav-icon">◉</span> Consistency</a>
+
+    </aside>
+
+    <main class="exam-main">
+
+        <div class="header">
+            <div>
+                <h1>Exam Schedule</h1>
+                <p>Keep track of your exams and stay one step ahead.</p>
+            </div>
+
+            <button class="add-btn" onclick="openModal()">+ Add Exam</button>
+        </div>
+
+        <div class="exam-stats">
+
+            <div class="exam-stat">
+                <p>Total Exams</p>
+                <h2 id="totalExams">0</h2>
+            </div>
+
+            <div class="exam-stat">
+                <p>Upcoming Exams</p>
+                <h2 id="upcomingExams">0</h2>
+            </div>
+
+            <div class="exam-stat">
+                <p>Completed Exams</p>
+                <h2 id="completedExams">0</h2>
+            </div>
+
+        </div>
+
+        <div class="exam-content">
+
+            <!-- CALENDAR -->
+
+            <section class="calendar-card">
+
+                <div class="calendar-top">
+                    <h2 id="monthYear"></h2>
+
+                    <div class="calendar-controls">
+                        <button onclick="changeMonth(-1)">←</button>
+                        <button onclick="goToday()">Today</button>
+                        <button onclick="changeMonth(1)">→</button>
+                    </div>
+                </div>
+
+                <div class="calendar-grid" id="calendarGrid"></div>
+
+            </section>
+
+            <!-- UPCOMING EXAMS -->
+
+            <section class="upcoming-card">
+
+                <div class="upcoming-heading">
+                    <h2>Upcoming Exams</h2>
+                    <span id="upcomingCount">0 exams</span>
+                </div>
+
+                <div class="upcoming-list" id="upcomingList"></div>
+
+            </section>
+
+        </div>
+
+        <!-- SELECTED DATE DETAILS -->
+
+        <section class="selected-details" id="selectedDetails"></section>
+
+    </main>
+</div>
+
+<!-- ADD EXAM MODAL -->
+
+<div class="exam-modal" id="examModal">
+
+    <div class="exam-form-card">
+
+        <h2>Add New Exam</h2>
+
+        <form id="examForm">
+
+            <label>Subject</label>
+            <input type="text" id="subject" placeholder="Enter subject name" required>
+
+            <label>Exam Date</label>
+            <input type="date" id="examDate" required>
+
+            <label>Exam Time</label>
+            <input type="time" id="examTime">
+
+            <label>Venue</label>
+            <input type="text" id="examVenue" placeholder="Enter exam venue">
+
+            <label>Syllabus / Topics</label>
+            <textarea id="examSyllabus" placeholder="Enter topics to prepare"></textarea>
+
+            <div class="form-buttons">
+                <button type="submit" class="save-btn">Save Exam</button>
+                <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<!-- BACKEND CONNECTION -->
+
+<script src="api.js"></script>
+<script src="exam.js"></script>
+
+<!-- ACCOUNT FUNCTIONALITY -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const accountButton = document.getElementById("accountButton");
+    const accountDropdown = document.getElementById("accountDropdown");
+    const logoutButton = document.getElementById("logoutButton");
+
+    const user = StudyMateAPI.getUser();
+
+    let username = "Student";
+
+    if (user) {
+        username = user.username || user.name || "Student";
+    }
+
+    // Display username
+    document.getElementById("accountUsername").textContent = username;
+    document.getElementById("dropdownUsername").textContent = username;
+
+    // Display first letter of username
+    document.querySelector(".account-avatar").textContent =
+        username.trim().charAt(0).toUpperCase() || "S";
+
+    // Open and close dropdown
+    accountButton.addEventListener("click", function (event) {
+        event.stopPropagation();
+        accountDropdown.classList.toggle("show");
+    });
+
+    // Logout
+    logoutButton.addEventListener("click", function () {
+        StudyMateAPI.logout();
+        window.location.href = "login.html";
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function (event) {
+        if (!event.target.closest(".account-wrapper")) {
+            accountDropdown.classList.remove("show");
+        }
+    });
+
+});
+</script>
+
+</body>
+</html>
